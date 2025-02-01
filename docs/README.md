@@ -3,8 +3,8 @@ layout: home
 permalink: index.html
 
 # Please update this with your repository name and title
-repository-name: eYY-4yp-project-template
-title:
+repository-name: e19-4yp-Legal-Chain-Resolver-With-Mixture-of-Experts-and-Multi-Agent-System-for-Legal-Assistance 
+title: AI Legal Chain Resolver: Mixture-of-Experts and Multi-agent System for Legal Assistance
 ---
 
 [comment]: # "This is the standard layout for the project, but you can clean this and use your own template"
@@ -13,14 +13,14 @@ title:
 
 #### Team
 
-- eNumber, Name, [email](mailto:name@email.com)
-- eNumber, Name, [email](mailto:name@email.com)
-- eNumber, Name, [email](mailto:name@email.com)
+- E/19/310, Ranage R.D.P.R., [email](mailto:e19310@eng.pdn.ac.lk)
+- E/19/426, Weerasinghe P.M., [email](mailto:e19426@eng.pdn.ac.lk)
+- E/19/304, Pushpakumara R.M.S.P., [email](mailto:e19304@eng.pdn.ac.lk)
 
 #### Supervisors
 
-- Name, [email](mailto:name@eng.pdn.ac.lk)
-- Name, [email](mailto:name@eng.pdn.ac.lk)
+- Dr. Damayanthi Herath, [email](mailto:damayanthiherath@eng.pdn.ac.lk )
+- Ms. Yasodha Vimukthi, [email](mailto:yashodhav@eng.pdn.ac.lk)
 
 #### Table of content
 

@@ -1,29 +1,29 @@
 {
     "team": [
         {
-            "name": "Team Member Name 1",
-            "email": "email@eng.pdn.ac.lk",
-            "eNumber": "E/yy/xxx"
+            "name": "Ranage R.D.P.R.",
+            "email": "e19310@eng.pdn.ac.lk",
+            "eNumber": "E/19/310"
         },
         {
-            "name": "Team Member Name 2",
-            "email": "email@eng.pdn.ac.lk",
-            "eNumber": "E/yy/xxx"
+            "name": "Weerasinghe P.M.",
+            "email": "e19426@eng.pdn.ac.lk",
+            "eNumber": "E/19/426"
         },
         {
-            "name": "Team Member Name 3",
-            "email": "email@eng.pdn.ac.lk",
-            "eNumber": "E/yy/xxx"
+            "name": "Pushpakumara R.M.S.P.",
+            "email": "e19304@eng.pdn.ac.lk",
+            "eNumber": "E/19/304"
         }
     ],
     "supervisors": [
         {
-            "name": "Dr. Supervisor 1",
-            "email": "email@eng.pdn.ac.lk"
+            "name": "Dr. Damayanthi Herath",
+            "email": "damayanthiherath@eng.pdn.ac.lk"
         },
         {
-            "name": "Dr. Supervisor 2",
-            "email": "email@eng.pdn.ac.lk"
+            "name": "Ms. Yasodha Vimukthi",
+            "email": "yashodhav@eng.pdn.ac.lk"
         }
     ],
     "media": [
@@ -33,5 +33,5 @@
             "url": "#"
         }
     ],
-    "tags": ["Final Year Projects"]
+    "tags": ["Final Year Projects, LLM, Law, Chatbot, MoE, Multi-agent"]
 }

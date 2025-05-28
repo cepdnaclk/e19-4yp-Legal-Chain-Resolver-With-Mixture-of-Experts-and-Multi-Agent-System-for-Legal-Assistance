@@ -55,13 +55,13 @@ The proposed system’s methodology is structured as follows:
 
 - **Retrieval-Augmented Generation (RAG) Pipeline:** Legal documents are preprocessed, embedded, and stored in a vector database. User queries are embedded and matched with relevant documents using cosine similarity, ensuring responses are grounded in authoritative texts and minimizing hallucinations
 
-<img src="./images/rag-pipeline.png" alt="RAG Pipeline"/>
+  <img src="./images/rag-pipeline.png" alt="RAG Pipeline"/>
 
 - **Knowledge Graph Integration:** Knowledge graphs are constructed using Named Entity Recognition (NER) and relation extraction to map entities and relationships within legal texts. This enables semantic reasoning and improves retrieval accuracy by considering both textual and relational similarities
 
 - **Mixture-of-Experts (MoE) Model:** Queries are routed to specialized expert models (e.g., contract law, intellectual property) via a gating network. Only the most relevant experts are activated, and their outputs are aggregated to form the final response, ensuring domain-specific accuracy and computational efficiency.
 
-<img src="./images/moe-architecture.png" alt="Mixture 0f Experts Archiecture"/>
+  <img src="./images/moe-architecture.png" alt="Mixture 0f Experts Archiecture"/>
 
 - **Multi-Agent System:** The system simulates a virtual law firm with four specialized agents:
   - Agent 1: User query processing and problem structuring
@@ -69,7 +69,7 @@ The proposed system’s methodology is structured as follows:
   - Agent 3: Expert analysis and legal reasoning (using MoE)
   - Agent 4: Legal document finalization and compliance review
  
-<img src="./images/multi-agent-system.png" alt="Multi-Agent System"/>
+  <img src="./images/multi-agent-system.png" alt="Multi-Agent System"/>
   
   These agents collaborate to deliver structured, accurate, and context-aware legal assistance
 
@@ -88,7 +88,7 @@ The implementation plan includes:
 
 - **Testing and Benchmarking:** Evaluating system performance against legal AI benchmarks and through practical case-based scenarios with expert feedback
 
-<img src="./images/high-level-workflow.png" alt="High Level Workflow"/>
+  <img src="./images/high-level-workflow.png" alt="High Level Workflow"/>
 
 ## Results and Analysis
 As of the current stage, full-scale evaluation and testing are pending. The system is designed to be assessed via benchmarking against existing legal AI assistants, focusing on improvements in accuracy, reliability, and contextual legal reasoning. Planned evaluation phases include comparative benchmarking, user-based testing with legal professionals, legal validation against real-world case law, and scalability assessments. The expected outcomes are enhanced accuracy, reduced misinformation, and improved usability compared to traditional NLP-based legal assistants

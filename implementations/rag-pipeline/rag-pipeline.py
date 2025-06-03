@@ -44,8 +44,11 @@ Explain the answer in a way that is easy to understand using only the provided c
 I will tip you $1000 if the user finds the answer helpful. 
 Do NOT include phrases like "Based on the context" or "Here's the answer".
 ONLY return the answer.
+If context is not provided or empty, respond with "Please ask a question".
 
+<context>
 {context}
+</context>
 
 Question: {input}
 """)

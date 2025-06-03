@@ -1,11 +1,9 @@
-from sentence_transformers import SentenceTransformer, util
-import numpy as np
 import pandas as pd
+from scipy.spatial import distance
+from sentence_transformers import SentenceTransformer
 
-# Load model
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-# Input data
 questions = [
     "What Are the Essential Elements of a Valid Contract?",
     "Do All Contracts Need to Be in Writing?",
@@ -78,30 +76,36 @@ gemini_answers = [
     "If a party cannot fulfill their obligations, they may breach the contract, incurring liability for damages or facing cancellation. The Vis major doctrine, recognized in South African law, excuses performance if unforeseen events (e.g., natural disasters) make it impossible. Otherwise, the non-performing party bears the consequences."
 ]
 
-# Collect all method answers
-methods = {
-    "MAS": mas_answers,
-    "Grok": grok_answers,
-    "DeepSeek": deepseek_answers,
-    "Gemini": gemini_answers
+# Encode original answers once
+original_vecs = [model.encode([ans])[0] for ans in original_answers]
+
+# Helper function using scipy cosine distance
+def cosine_sim(vec1, vec2):
+    return 1 - distance.cosine(vec1, vec2)
+
+answer_dict = {
+    'MAS': mas_answers,
+    'Grok': grok_answers,
+    'DeepSeek': deepseek_answers,
+    'Gemini': gemini_answers
 }
 
-# Encode all answers
-original_embeddings = model.encode(original_answers, convert_to_tensor=True)
-
 results = []
+for i, orig_vec in enumerate(original_vecs):
+    row = {'Question': questions[i]}
+    for method, answers in answer_dict.items():
+        method_vec = model.encode([answers[i]])[0]
+        row[method] = cosine_sim(orig_vec, method_vec)
+    results.append(row)
 
-for method_name, method_answers in methods.items():
-    method_embeddings = model.encode(method_answers, convert_to_tensor=True)
-    similarities = util.cos_sim(original_embeddings, method_embeddings).diagonal().cpu().numpy()
-    for i, score in enumerate(similarities):
-        results.append({
-            "Question": questions[i],
-            "Method": method_name,
-            "Similarity": round(score, 4)
-        })
-
-# Create and display the results in a DataFrame
 df = pd.DataFrame(results)
-df_pivot = df.pivot(index="Question", columns="Method", values="Similarity")
-print(df_pivot)
+df.set_index('Question', inplace=True)
+
+print("Similarity Scores for each question:")
+print(df)
+
+# Calculate average similarity score for each method
+avg_scores = df.mean(axis=0).to_frame(name='Average Similarity Score')
+
+print("\nAverage Similarity Scores by Method:")
+print(avg_scores)

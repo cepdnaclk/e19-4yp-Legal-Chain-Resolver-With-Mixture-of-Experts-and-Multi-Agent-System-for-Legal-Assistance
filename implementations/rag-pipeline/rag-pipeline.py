@@ -66,6 +66,11 @@ while True:
         print("Exiting. Goodbye!")
         break
     try:
+        retrieved_docs = retriever.invoke(user_query)
+        i = 0
+        for doc in retrieved_docs:
+            i += 1
+            print(f"\nRetrieved Document[{i}]: {doc.page_content}")
         response = retrieval_chain.invoke({"input": user_query})
         print("\nAnswer:", response['answer'])
     except Exception as e:

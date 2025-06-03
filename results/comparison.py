@@ -40,6 +40,18 @@ mas_answers = [
     "A non-performing party bears consequences. Impossibility justifies termination."
 ]
 
+neo4j_answers = [
+    "A valid contract requires capable parties, a clear offer and acceptance (mutual understanding), contractual capacity of the parties, a lawful purpose, and an intention to create legal relations. While a written form is listed, the query does not specify whether it is always required.",
+    "No. The database indicates that not all contracts need to be in writing.",
+    "A breach of contract can be constituted by repudiation, non-performance, or partial performance.",
+    "The remedies available for breach of contract include damages, interdict, cancellation with damages, and specific performance.",
+    "Contracts can end due to fulfillment of the contract's obligations, expiry of the contract's term, death of a party, fundamental non-performance, mutual agreement, or material breach.",
+    "I'm sorry, but I couldn't find any information.",
+    "Yes, a contract can be modified after it's been signed. This is called an amendment.",
+    "I'm sorry, but the provided database information does not explain the difference.",
+    "The provided information does not specify the answer."
+]
+
 grok_answers = [
     "A valid contract requires an agreement between parties, evidenced by an offer and acceptance, an intention to create legally binding obligations, a mutual understanding of terms, contractual capacity of parties, a lawful purpose, and terms capable of performance.",
     "Not all contracts need to be in writing; they can be oral or written, depending on the context, but specific contracts, such as land sales, credit agreements, long-term leases of ten years or more, contracts of suretyship, executory donations, and marriage contracts, must be in writing and signed to be enforceable under South African law.",
@@ -97,6 +109,7 @@ def cosine_sim(vec1, vec2):
 
 answer_dict = {
     'MAS': mas_answers,
+    'Neo4j': neo4j_answers,
     'Grok': grok_answers,
     'DeepSeek': deepseek_answers,
     'Gemini': gemini_answers,

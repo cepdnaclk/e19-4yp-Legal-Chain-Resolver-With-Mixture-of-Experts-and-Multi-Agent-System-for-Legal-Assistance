@@ -76,6 +76,18 @@ gemini_answers = [
     "If a party cannot fulfill their obligations, they may breach the contract, incurring liability for damages or facing cancellation. The Vis major doctrine, recognized in South African law, excuses performance if unforeseen events (e.g., natural disasters) make it impossible. Otherwise, the non-performing party bears the consequences."
 ]
 
+rag_answers = [
+    "The essential elements of a valid contract include an agreement between parties, evidenced by an offer and acceptance, and an intention to create legally binding obligations. There must be a mutual understanding, or “meeting of the minds,” ensuring both parties comprehend the contract’s terms. The parties involved must have the capacity to contract—legal age and sound mind—and the contract’s purpose must be lawful, with terms capable of performance.",
+    "No, not all contracts require written form. They can be oral or written, depending on the context.",
+    "A breach of contract happens when a party doesn't fulfill their obligations. This can be through not performing at all, performing only partially, or indicating they don't intend to perform.",
+    "Remedies for breach aim to restore the aggrieved party’s position. Specific performance, a court-ordered fulfillment of obligations, is common when monetary compensation is inadequate. The termination of the contract is possible if the breach is material.",
+    "Contracts may terminate through fulfillment of obligations, mutual agreement, material breach, death of a party (in personal service contracts), a condition subsequent that occurs, or expiry of the contract period.",
+    "Mutual obligations refer to the reciprocal duties each party undertakes. For example, in a sale, the seller delivers goods while the buyer pays the price.",
+    "Contracts can be modified post-signing, provided both parties agree and there is consideration.",
+    "A condition precedent is an event that must occur before a contract becomes effective. A condition subsequent terminates a contract if it occurs.",
+    "The non-performing party bears the consequences. Unilateral termination is permissible under specific circumstances, such as impossibility of performance. A breach of contract occurs when a party fails to fulfill their obligations."
+]
+
 # Encode original answers once
 original_vecs = [model.encode([ans])[0] for ans in original_answers]
 
@@ -87,7 +99,8 @@ answer_dict = {
     'MAS': mas_answers,
     'Grok': grok_answers,
     'DeepSeek': deepseek_answers,
-    'Gemini': gemini_answers
+    'Gemini': gemini_answers,
+    'RAG': rag_answers
 }
 
 results = []

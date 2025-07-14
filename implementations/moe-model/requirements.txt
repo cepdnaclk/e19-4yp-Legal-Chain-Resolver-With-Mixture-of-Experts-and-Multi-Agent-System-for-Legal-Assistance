@@ -1,0 +1,13 @@
+torch
+pandas
+scikit-learn
+networkx
+spacy
+flask
+jupyter
+pdfplumber
+sentence-transformers
+fpdf
+numpy
+pypdf2
+faiss-cpu

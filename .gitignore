@@ -14,11 +14,12 @@ venv/
 
 # Data
 implementations/moe-model/data/*.npy
-implementations/moe-model/data/gating_model.pt
 implementations/moe-model/data/gating_train.csv
 implementations/moe-model/data/extracted_texts/
 implementations/moe-model/data/raw_pdfs/
 implementations/moe-model/data/subdomains/
 implementations/moe-model/data/gating_queries/
+implementations/moe-model/data/splitting-pdfs
 
+!implementations/moe-model/data/gating_model.pt
 !implementations/moe-model/data/gating_train.csv

@@ -5,9 +5,9 @@ from legal_researcher.subagents.query_analyzer import query_analyzer #, knowledg
 coordinator = Agent(
     name="Coordinator",
     model="gemini-2.5-flash",
-    description="Coordinates query processing for contract law questions.",
+    description="Coordinates query processing for legal questions.",
     instruction=f"""
-You are a contract law coordinator agent. You are responsible for processing user queries by coordinating a team of sub-agents.
+You are a coordinator agent. You are responsible for processing user queries by coordinating a team of sub-agents.
 
 Workflow:
 1. Receive the user query.

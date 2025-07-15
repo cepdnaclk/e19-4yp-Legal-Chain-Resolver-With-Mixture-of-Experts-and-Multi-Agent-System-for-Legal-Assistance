@@ -1,5 +1,5 @@
 from google.adk import Agent
-from tools.query_moe_v2 import get_top_subdomains
+from legal_researcher.tools.query_moe_v2 import get_top_subdomains
 
 query_analyzer = Agent(
     name="QueryAnalyzer",

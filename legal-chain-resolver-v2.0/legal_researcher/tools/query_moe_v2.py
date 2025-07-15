@@ -2,7 +2,7 @@ import os
 import json
 import torch
 from sentence_transformers import SentenceTransformer
-from moe_tools.gating import TopKGatingNetwork
+from legal_researcher.tools.moe_tools.gating import TopKGatingNetwork
 
 # --- Load models & mappings once ---
 script_dir = os.path.dirname(__file__)

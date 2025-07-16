@@ -1,5 +1,7 @@
 from google.adk import Agent
-from legal_researcher.subagents.query_analyzer import query_analyzer #, knowledge_graph_retriever, response_generator, law_retriver
+from legal_researcher.subagents.query_analyzer import query_analyzer
+from legal_researcher.subagents.knowledge_retriever import knowledge_retriever
+from legal_researcher.subagents.response_generator import response_generator
 
 # Coordinator Agent
 coordinator = Agent(
@@ -12,12 +14,12 @@ You are a coordinator agent. You are responsible for processing user queries by 
 Workflow:
 1. Receive the user query.
 2. Pass the query to the QueryAnalyzer to get a list of relevant subdomains.
-3. Pass the list of subdomains to the KnowledgeGraphRetriever to get a relevant subgraph.
-4. Pass the subgraph and the original query to the ResponseGenerator to get a natural language answer.
-5. Pass the subgraph to the LawRetriever to get a list of relevant laws and acts.
-6. Return a dictionary containing the answer and the list of laws and acts.
+3. Pass the user query and the list of subdomains to the KnowledgeRetriever to get a relevant subgraph and documents.
+4. Pass the subgraph, the retrieved documents, and the original query to the ResponseGenerator to get a natural language answer.
+5. (Optional) Pass the subgraph to the LawRetriever to get a list of relevant laws and acts.
+6. Return a dictionary containing the answer and (optionally) the list of laws and acts.
 """,
-sub_agents=[query_analyzer]  # Add other sub-agents as needed
+sub_agents=[query_analyzer, knowledge_retriever, response_generator]  # Add other sub-agents as needed
 )
 
 def process_query(query: str) -> dict:
@@ -30,13 +32,18 @@ def process_query(query: str) -> dict:
     Returns:
         A dictionary containing the answer and a list of relevant laws and acts.
     """
-    subdomains = query_analyzer.get_relevant_subdomains(query)
-    # subgraph = knowledge_graph_retriever.get_subgraph_by_subdomain(subdomains)
-    # answer = response_generator.generate_response(subgraph, query)
+    relevant_subdomains_with_probs = query_analyzer.get_relevant_subdomains(query)
+    relevant_subdomains = [subdomain[0] for subdomain in relevant_subdomains_with_probs]
+
+    knowledge_data = knowledge_retriever.retrieve_knowledge(query, relevant_subdomains)
+    subgraph = knowledge_data["subgraph"]
+    documents = knowledge_data["documents"]
+
+    answer = response_generator.generate_response(subgraph, documents, query)
     # laws_and_acts = law_retriver.get_laws_and_acts(subgraph)
 
     return {
-        "answer": subdomains
+        "answer": answer
         # "laws_and_acts": laws_and_acts
     }
 

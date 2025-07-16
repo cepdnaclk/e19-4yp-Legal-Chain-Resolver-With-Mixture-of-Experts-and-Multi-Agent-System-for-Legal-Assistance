@@ -1,6 +1,24 @@
 from google.adk import Agent
 from legal_researcher.tools.query_moe_v2 import get_top_subdomains
 
+def get_relevant_subdomains(query: str) -> list[list]:
+    """
+    Identifies and returns the most relevant legal subdomains and their probabilities
+    by invoking the MoE system.
+
+    Args:
+        query (str): The user's legal query.
+
+    Returns:
+        list[list]: A list of [subdomain_name: str, probability: float] pairs,
+                    or an empty list if no subdomains are identified.
+
+    Example:
+        >>> get_relevant_subdomains("How do I register a trademark?")
+        [['ip_law', 0.6532], ['company_law', 0.3468]]
+    """
+    return get_top_subdomains(query)
+
 query_analyzer = Agent(
     name="QueryAnalyzer",
     model="gemini-2.5-flash",
@@ -24,23 +42,6 @@ Examples:
   - Output: [['ip_law', 0.6672], ['contract_law', 0.1125], ['electronic_transactions_law', 0.1121], ['securities_law', 0.1082]]
 - Input: Query = "An employee leaves a firm and starts a competing business, using designs and materials from the former company. How should the original company respond?"
   - Output: [['company_law', 0.5555], ['consumer_law', 0.1783], ['ip_law', 0.1695], ['securities_law', 0.0967]]
-"""
+""",
+tools=[get_relevant_subdomains]
 )
-
-def get_relevant_subdomains(query: str) -> list[list]:
-    """
-    Identifies and returns the most relevant legal subdomains and their probabilities
-    by invoking the MoE system.
-
-    Args:
-        query (str): The user's legal query.
-
-    Returns:
-        list[list]: A list of [subdomain_name: str, probability: float] pairs,
-                    or an empty list if no subdomains are identified.
-
-    Example:
-        >>> get_relevant_subdomains("How do I register a trademark?")
-        [['ip_law', 0.6532], ['company_law', 0.3468]]
-    """
-    return get_top_subdomains(query)

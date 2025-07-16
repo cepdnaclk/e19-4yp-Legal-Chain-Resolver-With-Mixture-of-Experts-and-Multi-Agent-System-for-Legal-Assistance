@@ -66,23 +66,32 @@ if os.path.exists(FAISS_INDEX_PATH):
 else:
     faiss_vector_store = create_and_save_faiss_index()
 
-def retrieve_documents(query, k=6):
-    retriever = faiss_vector_store.as_retriever(search_kwargs={'k': k})
+# def retrieve_documents(query):
+#     retriever = faiss_vector_store.as_retriever(search_kwargs={'k': 6})
+#     retrieved_docs = retriever.invoke(query)
+#     return retrieved_docs
+
+def retrieve_documents(query: str) -> list[str]:
+    """
+    Retrieves relevant documents given a query string.
+    """
+    retriever = faiss_vector_store.as_retriever(search_kwargs={'k': 6})
     retrieved_docs = retriever.invoke(query)
-    return retrieved_docs
+    return [doc.page_content for doc in retrieved_docs] 
 
 # --- Interactive User Input Loop ---
-print("Ask a question about the documents. Type 'exit' or 'quit' to stop.")
-while True:
-    user_query = input("\nYour question: ").strip()
-    if user_query.lower() in {"exit", "quit"}:
-        print("Exiting. Goodbye!")
-        break
-    try:
-        retrieved_docs = retrieve_documents(user_query)
-        i = 0
-        for doc in retrieved_docs:
-            i += 1
-            print(f"\nRetrieved Document[{i}]: {doc.page_content}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+if __name__ == "__main__":
+    print("Ask a question about the documents. Type 'exit' or 'quit' to stop.")
+    while True:
+        user_query = input("\nYour question: ").strip()
+        if user_query.lower() in {"exit", "quit"}:
+            print("Exiting. Goodbye!")
+            break
+        try:
+            retrieved_docs = retrieve_documents(user_query)
+            i = 0
+            for doc in retrieved_docs:
+                i += 1
+                print(f"\nRetrieved Document[{i}]: {doc.page_content}")
+        except Exception as e:
+            print(f"An error occurred: {e}")

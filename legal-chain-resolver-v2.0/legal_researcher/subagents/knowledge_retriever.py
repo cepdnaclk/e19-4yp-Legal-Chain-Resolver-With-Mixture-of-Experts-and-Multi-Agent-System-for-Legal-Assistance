@@ -23,7 +23,7 @@ def get_subgraph_by_subdomain(subdomains: list[str]) -> dict:
         "05. Banking_Amendment_Act_No_24_of_2024_e": "banking_law",
         "06. Banking (Special Provisions) Act, No. 17 of 2023": "banking_law",
         "07. Securities and Exchange Commission of Sri Lanka": "securities_law",
-        "08. INSOLVENTS [Cap.103 - Lanka Law": "insolvency_law",
+        "08. INSOLVENTS Cap.103 - Lanka Law": "insolvency_law",
         "09. Sale of goods part 1 5-1-2020 notes": "contract_law",
         "10. Bills of Exchanger Ordinance": "negotiable_instruments_law",
         "11. BILLS OF EXCHANGE (AMENDMENT)": "negotiable_instruments_law",

@@ -30,6 +30,7 @@ def get_subgraph_by_subdomain(subdomains: list[str]) -> dict:
         "12. Consumer Affairs Authority Act No 9 of 2003": "consumer_law",
         "13. Intellectual_Property_Act_No_36_of_2003": "ip_law",
         "14. ARBITRATION-ACT No 11 of 1995": "arbitration_law",
+        "15. INTERNATIONAL ARBITRATION ACT.pdf": "arbitration_law",
         "16. Trust Ordinance": "trust_law",
         "17. ElectronicTransactionActNo19of2006": "electronic_transactions_law",
         "18. Foreign Exchange ACT NO 12 of 2017": "foreign_exchange_law"

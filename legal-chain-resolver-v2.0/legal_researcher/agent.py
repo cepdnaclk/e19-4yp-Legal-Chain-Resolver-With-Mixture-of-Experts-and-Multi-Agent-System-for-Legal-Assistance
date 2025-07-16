@@ -18,6 +18,7 @@ Workflow:
 4. Pass the subgraph, the retrieved documents, and the original query to the ResponseGenerator to get a natural language answer.
 5. (Optional) Pass the subgraph to the LawRetriever to get a list of relevant laws and acts.
 6. Return a dictionary containing the answer and (optionally) the list of laws and acts.
+7. After answering a question, repeat the process for the next user query if there's any.
 """,
 sub_agents=[query_analyzer, knowledge_retriever, response_generator]  # Add other sub-agents as needed
 )

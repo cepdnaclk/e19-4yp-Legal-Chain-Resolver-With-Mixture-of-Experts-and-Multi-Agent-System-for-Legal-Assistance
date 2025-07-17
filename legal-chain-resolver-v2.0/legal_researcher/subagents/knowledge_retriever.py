@@ -50,6 +50,9 @@ def get_subgraph_by_subdomain(subdomains: list[str]) -> dict:
         edge for edge in full_kg_data["edges"]
         if any(doc in edge["source"] or doc in edge.get("target", "") for doc in selected_docs)
     ]
+    
+    subgraph_nodes = subgraph_nodes[:5]
+    subgraph_edges = subgraph_edges[:10]
 
     return {
         "nodes": subgraph_nodes,
@@ -81,7 +84,7 @@ def retrieve_knowledge(user_query: str, subdomains: list[str]) -> dict:
 knowledge_retriever = Agent(
     name="KnowledgeRetriever",
     model="gemini-2.5-flash",
-    description="Retrieves a subgraph from the knowledge graph based on identified subdomains and retrieves relevant documents using a RAG pipeline.",
+    description="Retrieves a subgraph from the knowledge graph based on identified subdomains and retrieves relevant documents using a RAG pipeline and send them to the coordinator.",
     instruction=f"""
 You are a knowledge retriever agent. You receive a user query and a list of relevant subdomains. Your task is to:
 1. Retrieve a subgraph from the knowledge graph containing all nodes and edges related to the all the provided subdomains.
@@ -94,13 +97,13 @@ Workflow:
 3. From the filtered triples, extract all unique subjects and objects to form the nodes of the subgraph.
 4. The filtered triples themselves will be the edges of the subgraph.
 5. Call `retrieve_documents` from the RAG pipeline with the user query to get relevant document chunks.
-6. Return a dictionary containing two keys: "subgraph" and "documents".
+6. Return a dictionary containing two keys: "subgraph" and "documents" to the coordinator.
    - "subgraph" will be a dictionary with "nodes" and "edges".
    - "documents" will be a list of retrieved document chunks.
 
 Example:
 - Input: user_query = "What are the regulations for starting a new company?", subdomains = ["company_law"]
-- Output: A dictionary with two keys: "subgraph" and "documents".
+- Output: Return a dictionary with two keys: "subgraph" and "documents".
   - "subgraph" will contain nodes and edges related to "company_law".
   - "documents" will contain relevant document chunks about company regulations.
 """,

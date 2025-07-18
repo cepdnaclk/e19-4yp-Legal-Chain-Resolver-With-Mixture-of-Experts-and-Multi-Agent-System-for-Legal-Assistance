@@ -1,4 +1,4 @@
-from google.adk import Agent
+from google.adk.agents import Agent
 from legal_researcher.subagents.query_analyzer import query_analyzer
 from legal_researcher.subagents.knowledge_retriever import knowledge_retriever
 from legal_researcher.subagents.response_generator import response_generator

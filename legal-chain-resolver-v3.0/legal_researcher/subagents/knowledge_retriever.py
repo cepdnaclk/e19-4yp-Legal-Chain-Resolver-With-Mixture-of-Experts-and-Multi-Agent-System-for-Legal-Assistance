@@ -1,5 +1,5 @@
 from google.adk import Agent
-import legal_researcher.tools.knowledge_graph as kg
+import legal_researcher.tools.knowledge_graph.full_knowledge_graph as kg
 from legal_researcher.tools.rag_pipeline_v2 import retrieve_documents
 
 full_kg_data = kg.full_kg_data

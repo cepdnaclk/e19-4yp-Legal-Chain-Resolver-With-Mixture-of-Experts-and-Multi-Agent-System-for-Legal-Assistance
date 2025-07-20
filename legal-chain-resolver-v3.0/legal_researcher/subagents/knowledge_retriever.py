@@ -1,12 +1,42 @@
 from google.adk import Agent
-import legal_researcher.tools.knowledge_graph.full_knowledge_graph as kg
 from legal_researcher.tools.rag_pipeline_v2 import retrieve_documents
 
-full_kg_data = kg.full_kg_data
+import legal_researcher.tools.knowledge_graph.full_knowledge_graph as full_kg
+import legal_researcher.tools.knowledge_graph.arbitration_law_kg as arbitration_law_kg
+import legal_researcher.tools.knowledge_graph.banking_law_kg as banking_law_kg
+import legal_researcher.tools.knowledge_graph.company_law_kg as company_law_kg
+import legal_researcher.tools.knowledge_graph.consumer_law_kg as consumer_law_kg
+import legal_researcher.tools.knowledge_graph.contract_law_kg as contract_law_kg
+import legal_researcher.tools.knowledge_graph.electronic_transactions_law_kg as electronic_transactions_law_kg
+import legal_researcher.tools.knowledge_graph.foreign_exchange_law_kg as foreign_exchange_law_kg
+import legal_researcher.tools.knowledge_graph.insolvency_law_kg as insolvency_law_kg
+import legal_researcher.tools.knowledge_graph.ip_law_kg as ip_law_kg
+import legal_researcher.tools.knowledge_graph.negotiable_instruments_law_kg as negotiable_instruments_law_kg
+import legal_researcher.tools.knowledge_graph.securities_law_kg as securities_law_kg
+import legal_researcher.tools.knowledge_graph.tax_law_kg as tax_law_kg
+import legal_researcher.tools.knowledge_graph.trust_law_kg as trust_law_kg
+
+full_kg_data = full_kg.kg
+arbitration_kg_data = arbitration_law_kg.kg
+banking_kg_data = banking_law_kg.kg
+company_kg_data = company_law_kg.kg
+consumer_kg_data = consumer_law_kg.kg
+contract_kg_data = contract_law_kg.kg
+electronic_transactions_kg_data = electronic_transactions_law_kg.kg
+foreign_exchange_kg_data = foreign_exchange_law_kg.kg
+insolvency_kg_data = insolvency_law_kg.kg
+ip_kg_data = ip_law_kg.kg
+negotiable_instruments_kg_data = negotiable_instruments_law_kg.kg
+securities_kg_data = securities_law_kg.kg
+tax_kg_data = tax_law_kg.kg
+trust_kg_data = trust_law_kg.kg
+
+from itertools import cycle
 
 def get_subgraph_by_subdomain(subdomains: list[str]) -> dict:
     """
-    Retrieves a subgraph from the main knowledge graph based on a list of subdomains.
+    Retrieves a subgraph from the main knowledge graph based on a list of subdomains,
+    interleaving nodes and edges from the subdomains.
 
     Args:
         subdomains: A list of subdomain names (e.g., ["company_law", "banking_law"]).
@@ -14,52 +44,88 @@ def get_subgraph_by_subdomain(subdomains: list[str]) -> dict:
     Returns:
         A dictionary containing the nodes and edges of the subgraph.
     """
-    # The given mapping
-    mapping = {
-        "01. Companies Act No. 7 of 2007": "company_law",
-        "02. Inland Revenue Act_No_24_2017_E": "tax_law",
-        "03. Inland Revenue (Amendment) Act No. 2 of 2025": "tax_law",
-        "04. Banking Act 30_1988": "banking_law",
-        "05. Banking_Amendment_Act_No_24_of_2024_e": "banking_law",
-        "06. Banking (Special Provisions) Act, No. 17 of 2023": "banking_law",
-        "07. Securities and Exchange Commission of Sri Lanka": "securities_law",
-        "08. INSOLVENTS Cap.103 - Lanka Law": "insolvency_law",
-        "09. Sale of goods part 1 5-1-2020 notes": "contract_law",
-        "10. Bills of Exchanger Ordinance": "negotiable_instruments_law",
-        "11. BILLS OF EXCHANGE (AMENDMENT)": "negotiable_instruments_law",
-        "12. Consumer Affairs Authority Act No 9 of 2003": "consumer_law",
-        "13. Intellectual_Property_Act_No_36_of_2003": "ip_law",
-        "14. ARBITRATION-ACT No 11 of 1995": "arbitration_law",
-        "15. INTERNATIONAL ARBITRATION ACT.pdf": "arbitration_law",
-        "16. Trust Ordinance": "trust_law",
-        "17. ElectronicTransactionActNo19of2006": "electronic_transactions_law",
-        "18. Foreign Exchange ACT NO 12 of 2017": "foreign_exchange_law"
+    domain_graphs = {
+        "arbitration_law": arbitration_kg_data,
+        "banking_law": banking_kg_data,
+        "company_law": company_kg_data,
+        "consumer_law": consumer_kg_data,
+        "contract_law": contract_kg_data,
+        "electronic_transactions_law": electronic_transactions_kg_data,
+        "foreign_exchange_law": foreign_exchange_kg_data,
+        "insolvency_law": insolvency_kg_data,
+        "ip_law": ip_kg_data,
+        "negotiable_instruments_law": negotiable_instruments_kg_data,
+        "securities_law": securities_kg_data,
+        "tax_law": tax_kg_data,
+        "trust_law": trust_kg_data,
     }
 
-    # Collect document IDs corresponding to selected subdomains
-    selected_docs = {doc for doc, domain in mapping.items() if domain in subdomains}
+    # Build normalized node_id -> full node lookup from full graph
+    full_node_lookup = {
+        node.get("data", {}).get("id", "").strip().lower(): node
+        for node in full_kg_data.get("nodes", [])
+        if not node.get("data", {}).get("id", "").strip().lower().endswith(".pdf")
+    }
 
-    # Filter nodes
-    subgraph_nodes = [
-        node for node in full_kg_data["nodes"]
-        if any(doc in node["data"]["id"] for doc in selected_docs)
-    ]
+    full_edges = full_kg_data.get("edges", [])
 
-    # Filter edges where source or target matches a selected document
-    subgraph_edges = [
-        edge for edge in full_kg_data["edges"]
-        if any(doc in edge["source"] or doc in edge.get("target", "") for doc in selected_docs)
-    ]
+    # Collect node IDs per subdomain
+    nodes_per_domain = []
+    edges_per_domain = []
+
+    for domain in subdomains:
+        kg = domain_graphs.get(domain)
+        if not kg:
+            continue
+
+        domain_node_ids = set()
+        for node in kg.get("nodes", []):
+            node_id = node.get("data", {}).get("id", "").strip().lower()
+            if node_id:
+                domain_node_ids.add(node_id)
+
+        # Get corresponding full nodes
+        domain_nodes = [
+            full_node_lookup[nid]
+            for nid in domain_node_ids
+            if nid in full_node_lookup
+        ]
+        nodes_per_domain.append(domain_nodes)
+
+        # Get edges where source or target is in domain_node_ids
+        domain_edges = [
+            edge for edge in full_edges
+            if edge.get("source", "").strip().lower() in domain_node_ids
+            or edge.get("target", "").strip().lower() in domain_node_ids
+        ]
+        edges_per_domain.append(domain_edges)
+
+    # Round-robin selection
+    def round_robin(lists, limit):
+        result = []
+        iterators = [iter(lst) for lst in lists if lst]
+        for item in cycle(iterators):
+            try:
+                result.append(next(item))
+                if len(result) >= limit:
+                    break
+            except StopIteration:
+                iterators.remove(item)
+                if not iterators:
+                    break
+        return result
     
-    subgraph_nodes = subgraph_nodes[:5]
-    subgraph_edges = subgraph_edges[:10]
+    print(f"Retrieved subgraph with nodes: {len(nodes_per_domain)} and edges: {len(edges_per_domain)}")
+
+    final_nodes = round_robin(nodes_per_domain, 10)
+    final_edges = round_robin(edges_per_domain, 100)
+
+    print(f"Retrieved subgraph with nodes: {len(final_nodes)} and edges: {len(final_edges)}")
 
     return {
-        "nodes": subgraph_nodes,
-        "edges": subgraph_edges
+        "nodes": final_nodes,
+        "edges": final_edges
     }
-
-
 
 def retrieve_knowledge(user_query: str, subdomains: list[str]) -> dict:
     """
@@ -84,6 +150,7 @@ def retrieve_knowledge(user_query: str, subdomains: list[str]) -> dict:
 knowledge_retriever = Agent(
     name="KnowledgeRetriever",
     model="gemini-2.5-flash",
+    # model="gemini-2.5-flash-lite-preview-06-17",
     description="Retrieves a subgraph from the knowledge graph based on identified subdomains and retrieves relevant documents using a RAG pipeline and send them to the coordinator.",
     instruction=f"""
 You are a knowledge retriever agent. You receive a user query and a list of relevant subdomains. Your task is to:

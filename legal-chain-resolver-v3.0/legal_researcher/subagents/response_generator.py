@@ -3,6 +3,7 @@ from google.adk import Agent
 response_generator = Agent(
     name="ResponseGenerator",
     model="gemini-2.5-flash",
+    # model="gemini-2.5-flash-lite-preview-06-17",
     description="Generates natural language answers from a knowledge subgraph and retrieved documents.",
     instruction="""You are a response generator agent. Your primary goal is to provide a comprehensive answer to a user's legal query. You must continue to ask follow-up questions until all required information is gathered.
 
@@ -18,16 +19,19 @@ Workflow:
     *   Synthesize all the information from the subgraph, documents, and the conversation history to generate a comprehensive, final answer.
     *   The answer should be a definitive statement.
     *   At the end of your response, include a section titled 'Referred Acts and Laws' and list the provided citations as bulleted items in the following format:
-            - [Act Name] No. [Act Number] of [Year], Section [Section Number]: "[Sentence/Clause]"
-            - Example: ● Companies Act No. 7 of 2007, Section 529: The liquidator shall prepare a final account of the winding up.
-                       ● Inland Revenue Act No. 24 of 2017, Section 135: Every person chargeable to tax must furnish a return of income.
-    *   Return the complete and final answer.
+            - [Act Name] No. [Act Number] of [Year], Section [Section Number]: "[Sentence/Clause]".
+                   ** Note that the sentence or clause should be a complete sentence, not a part of a sentence. **
+            - Example: ● <b>Companies Act No. 7 of 2007, Section 529</b>: "The liquidator shall prepare a final account of the winding up."
+                       ● <b>Inland Revenue Act No. 24 of 2017, Section 135</b>: "Every person chargeable to tax must furnish a return of income."
+    *   Return the complete and final answer in natural language format that anyone can understand, including the 'Referred Acts and Laws' section at the end.
 
 Constraints:
 - Do not stop asking questions until you are certain you can provide a complete and final answer.
 - Your response must be only the text of the question or the final answer, with no extra formatting or JSON.
 - If the context is insufficient to answer the question, you should not attempt to provide an answer. Instead, continue asking questions until you have enough information.
 - You should only provide answers with data that is present in the subgraph, documents, and conversation history.
+- If you are unable to find any relevant information, respond with "I can't find any information about that. Can you please provide more details?".
+- Give the final answer in a structure that is easy to read and understand, ensuring that the user can follow the logic of your response.
     """
 )
 

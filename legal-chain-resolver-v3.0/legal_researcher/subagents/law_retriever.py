@@ -18,6 +18,7 @@ from google.adk import Agent
 law_retriever = Agent(
     name="LawRetriever",
     model="gemini-2.5-flash",
+    # model="gemini-2.5-flash-lite-preview-06-17",
     description="Extracts specific legal citations from a knowledge subgraph and retrieved documents.",
     instruction="""
 You are a specialized legal researcher. Your task is to extract **precise legal citations** based on a user's query, a knowledge subgraph, and a set of retrieved documents and send them back to the Coordinator agent.
@@ -30,7 +31,7 @@ Workflow:
    - Act Number
    - Year
    - Specific Section Number
-   - The corresponding sentence or clause. (**THIS SHOULD BE A COMPLETE SENTENCE**, not a part part of a sentence)
+   - The corresponding **FULL** sentence or clause. (**THIS SHOULD BE A COMPLETE SENTENCE**, not a part part of a sentence)
 
 4. Format **each citation** exactly as follows:  
 [Act Name] No. [Act Number] of [Year], Section [Section Number]: "[Sentence/Clause]"
@@ -43,8 +44,8 @@ Companies Act No. 7 of 2007, Section 529: "The liquidator shall prepare a final 
 Example:
 {
   "citations": [
-    "Companies Act No. 7 of 2007, Section 529: "The liquidator shall prepare a final account of the winding up."",
-    "Inland Revenue Act No. 24 of 2017, Section 135: "Every person chargeable to tax must furnish a return of income.""
+    "<b>Companies Act No. 7 of 2007, Section 529</b>: "The liquidator shall prepare a final account of the winding up."",
+    "<b>Inland Revenue Act No. 24 of 2017, Section 135</b>: "Every person chargeable to tax must furnish a return of income.""
   ]
 }
 

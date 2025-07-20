@@ -24,5 +24,7 @@ implementations/moe-model/data/splitting-pdfs
 !implementations/moe-model/data/gating_model.pt
 !implementations/moe-model/data/gating_train.csv
 
+implementations/user-interface/react_ui
+
 # FAISS Index
 legal-chain-resolver-v2.0/legal-researcher/tools/faiss_index/

@@ -56,13 +56,27 @@ This project aims to create an AI-powered legal assistant that specializes in Sr
 
 ### 2.3. Running the Application
 
-The main application is a Streamlit-based user interface. To run it, use the following command:
+To run the application, you need to start the ADK API server and the Streamlit user interface.
 
-```bash
-streamlit run implementations/user-interface/legal_researcher_app.py
-```
+1.  **Start the ADK API server:**
 
-This will start a web server and open the application in your browser.
+    Open a new terminal, navigate to the `legal-chain-resolver-v3.1` directory, and run the following command:
+
+    ```bash
+    adk api_server
+    ```
+
+    This will start the ADK API server, which is required for the multi-agent system to function.
+
+2.  **Start the Streamlit user interface:**
+
+    Open another terminal and run the following command:
+
+    ```bash
+    streamlit run implementations/user-interface/legal_researcher_app.py
+    ```
+
+    This will start the Streamlit web server and open the application in your browser.
 
 ## 3. Project Structure
 

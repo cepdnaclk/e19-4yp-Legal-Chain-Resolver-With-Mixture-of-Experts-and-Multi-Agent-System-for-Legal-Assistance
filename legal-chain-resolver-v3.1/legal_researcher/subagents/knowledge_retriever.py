@@ -129,8 +129,8 @@ def get_subgraph_by_subdomain(subdomains: list[str]) -> dict:
                 break
         return result
 
-    final_nodes = round_robin(nodes_per_domain, 10)
-    final_edges = round_robin(edges_per_domain, 100)
+    final_nodes = round_robin(nodes_per_domain, 25)
+    final_edges = round_robin(edges_per_domain, 250)
 
     print(f"Retrieved subgraph with {len(final_nodes)} nodes and {len(final_edges)} edges.")
 

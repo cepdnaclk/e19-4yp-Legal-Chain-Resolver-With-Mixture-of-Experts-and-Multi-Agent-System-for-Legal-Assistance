@@ -201,6 +201,7 @@ def send_message(message):
                     except json.JSONDecodeError:
                         # If JSON parsing fails, check the raw text for valid prefixes
                         raw_text = part["text"]
+                        # Save raw_text to a JSON file
                         if raw_text.startswith("Follow-up question: "):
                             assistant_message = raw_text.replace("Follow-up question: ", "").strip()
                         elif raw_text.startswith("Clarification: "):
@@ -223,6 +224,10 @@ def send_message(message):
         assistant_message = "No valid response received from the agent."
     
     # Add assistant response to chat
+    # Save the user query and assistant's response to a JSON file
+    with open("response_data.json", "a") as json_file:
+        json.dump({"Query": message, "Answer": assistant_message}, json_file)
+        json_file.write("\n")  # Write a newline for each entry
     st.session_state.messages.append({"role": "assistant", "content": assistant_message})
     
     return True
